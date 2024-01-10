@@ -51,3 +51,24 @@ func (s Globs) String() (list string) {
 	list += "]"
 	return
 }
+
+// Match returns true if one of the globs matches the given input
+func (s Globs) Match(input string) (matched bool) {
+	for _, g := range s {
+		if matched, _ = g.Match(input); matched {
+			return
+		}
+	}
+	return
+}
+
+// Find returns the first glob that matches the given input
+func (s Globs) Find(input string) (matched *glob.Glob) {
+	for _, g := range s {
+		if match, _ := g.Match(input); match {
+			matched = g
+			return
+		}
+	}
+	return
+}

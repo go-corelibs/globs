@@ -17,6 +17,7 @@ package globs
 import (
 	"testing"
 
+	glob "github.com/ganbarodigital/go_glob"
 	. "github.com/smartystreets/goconvey/convey"
 )
 
@@ -34,5 +35,21 @@ func TestGlobs(t *testing.T) {
 		list, err = Parse("[nope")
 		So(err, ShouldNotEqual, nil)
 		So(list, ShouldEqual, Globs(nil))
+	})
+
+	Convey("Match", t, func() {
+		list, err := Parse("*.txt", "*.go")
+		So(err, ShouldEqual, nil)
+		So(len(list), ShouldEqual, 2)
+		So(list.Match("nope.log"), ShouldEqual, false)
+		So(list.Match("source.go"), ShouldEqual, true)
+	})
+
+	Convey("Find", t, func() {
+		list, err := Parse("*.txt", "*.go")
+		So(err, ShouldEqual, nil)
+		So(len(list), ShouldEqual, 2)
+		So(list.Find("nope.log"), ShouldEqual, (*glob.Glob)(nil))
+		So(list.Find("source.go"), ShouldEqual, list[1])
 	})
 }
