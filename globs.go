@@ -40,13 +40,13 @@ func Parse(patterns ...string) (globs Globs, err error) {
 
 // String implements the fmt.Stringer interface, outputting the list of globs
 // in a JSON string array format
-func (g Globs) String() (list string) {
+func (s Globs) String() (list string) {
 	list += "["
-	for idx, gg := range g {
+	for idx, g := range s {
 		if idx > 0 {
 			list += ","
 		}
-		list += fmt.Sprintf("%q", gg.Pattern())
+		list += fmt.Sprintf("%q", g.Pattern())
 	}
 	list += "]"
 	return
